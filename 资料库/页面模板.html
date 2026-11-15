@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="九州志本地共创资料库。离线阅读、全文索引、来源引用、修改影响与待决事项追踪。">
+  <title>九州志 · 本地资料库</title>
+  <style>/*__STYLE__*/</style>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">跳转到正文</a>
+  <div id="mobile-shade" class="mobile-shade" hidden></div>
+  <aside id="sidebar" class="sidebar" aria-label="资料库导航">
+    <a class="brand" href="#home" aria-label="九州志资料总览"><span class="brand-seal">九<br>州</span><span><b>九州志</b><small>共创资料库</small></span></a>
+    <div class="sidebar-divider"></div>
+    <nav id="primary-nav" class="primary-nav" aria-label="主要功能"></nav>
+    <div class="sidebar-heading">分卷索引 <span id="sidebar-count"></span></div>
+    <nav id="collection-nav" class="collection-nav" aria-label="资料分类"></nav>
+    <div class="sidebar-heading bookmark-heading">案头收藏 <span id="bookmark-count"></span></div>
+    <div id="bookmark-nav" class="bookmark-nav"></div>
+    <div class="sidebar-footer"><span class="online-dot"></span> 本地阅览 · 离线可用<small id="build-date"></small><button class="sidebar-help" data-action="help">如何更新资料库 <span>↗</span></button></div>
+  </aside>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="icon-button mobile-menu" data-action="menu" aria-label="展开目录"></button>
+      <div id="breadcrumb" class="breadcrumb">九州志 <span>/</span> 资料总览</div>
+      <button class="search-launch" data-action="search"><span class="search-icon"></span><span>搜索条目、概念与正文</span><kbd>Ctrl K</kbd></button>
+      <span class="work-badge"><i></i> 当前工作稿</span>
+      <button class="icon-button top-help" data-action="help" aria-label="使用说明"></button>
+    </header>
+    <main id="workspace" tabindex="-1"></main>
+    <footer class="page-footer"><span>九州志 · 共创资料库</span><span>每条设定，一处维护；每次演化，有据可循。</span><button data-action="help">更新与使用</button></footer>
+  </div>
+  <dialog id="search-dialog" class="search-dialog" aria-label="全文搜索">
+    <form method="dialog" class="search-top"><span class="search-icon"></span><input id="search-input" autocomplete="off" placeholder="搜索名称、正文、规则或 D 编号…" aria-label="搜索关键词"><button value="close" class="key-button" aria-label="关闭搜索">Esc</button></form>
+    <div class="search-options"><span id="search-summary">输入关键词，搜索所有现行资料</span><label><input id="search-archive" type="checkbox"> 包含归档</label></div>
+    <div id="search-results" class="search-results" role="list"></div>
+    <div class="search-bottom"><span>名称、章节与正文同时检索</span><span><kbd>↑</kbd><kbd>↓</kbd> 选择 <kbd>Enter</kbd> 阅读</span></div>
+  </dialog>
+  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title"><button class="dialog-close icon-button" data-action="close-help" aria-label="关闭说明">×</button><div class="eyebrow">案头使用指南</div><h2 id="help-title">阅读有径，修改有据。</h2><div class="help-step"><b>01</b><div><h3>直接打开，离线查阅</h3><p>本页面已收录项目正文与两张原图。搜索、目录、图谱和待决追踪都可在本地使用，归档附件可从原文件打开。</p></div></div><div class="help-step"><b>02</b><div><h3>改源文档，再更新资料库</h3><p>Markdown 文件仍是唯一正文。修改或新增资料后，双击项目根目录的<strong>“更新资料库.cmd”</strong>，完成后刷新本页面。打开 HTML 本身不会自动扫描磁盘变化。</p></div></div><div class="help-step"><b>03</b><div><h3>分清引用与修改影响</h3><p>正文引用展示页面如何相互引用；修改影响来自协作文档中的检查路线。图谱中的连线用于追踪文档关系，不代表所有对象互为创世前提。</p></div></div><div class="help-step"><b>04</b><div><h3>收藏与最近阅读</h3><p>收藏和阅读记录仅保存在当前浏览器。本资料库不修改原文或待决状态；需要确认设定时，请在对应主文档和决策记录中维护。</p></div></div><div class="help-note" id="help-build"></div></dialog>
+  <dialog id="image-dialog" class="image-dialog" aria-labelledby="image-title"><header><span id="image-title">原图</span><div><button data-action="image-minus" aria-label="缩小图片">−</button><button data-action="image-fit">适应窗口</button><button data-action="image-plus" aria-label="放大图片">＋</button><button data-action="close-image" aria-label="关闭图片">×</button></div></header><div id="image-zoom-stage" class="image-zoom-stage"><img id="zoom-image" alt=""></div></dialog>
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <noscript><div class="noscript">请启用浏览器的 JavaScript 以使用本地资料库，或直接打开项目中的 README.md 阅读索引。</div></noscript>
+  <script type="application/json" id="library-data">/*__DATA__*/</script>
+  <script>/*__APP__*/</script>
+</body>
+</html>

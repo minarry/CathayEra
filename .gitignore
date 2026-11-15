@@ -1,0 +1,5 @@
+# Local validation output and Python caches
+资料库/验证输出/
+__pycache__/
+*.py[cod]
+.browser-profile-*/
