@@ -28,10 +28,11 @@ GROUPS = {
     'management': {'name': '项目管理', 'short': '管理', 'icon': 'folder', 'color': '#526b87'},
     'world': {'name': '世界设定', 'short': '设定', 'icon': 'hexagon', 'color': '#337669'},
     'history': {'name': '世界历史', 'short': '历史', 'icon': 'scroll', 'color': '#a95e40'},
-    'source': {'name': '创作者资料', 'short': '来源', 'icon': 'feather', 'color': '#9b7c33'},
+    'story': {'name': '故事创作', 'short': '故事', 'icon': 'feather', 'color': '#78638b'},
+    'source': {'name': '来源资料', 'short': '来源', 'icon': 'feather', 'color': '#9b7c33'},
     'archive': {'name': '历史归档', 'short': '归档', 'icon': 'archive', 'color': '#827b76'},
 }
-FOLDERS = {'00_项目管理': 'management', '01_世界设定': 'world', '02_世界历史': 'history', '资料': 'source', '归档': 'archive'}
+FOLDERS = {'00_项目管理': 'management', '01_世界设定': 'world', '02_世界历史': 'history', '03_故事创作': 'story', '资料': 'source', '归档': 'archive'}
 DECISION_PATH = '00_项目管理/决策与待办.md'
 GOV_PATH = '00_项目管理/协作与版本管理.md'
 LINK_RE = re.compile(r'(!?)\[([^\]\n]+)\]\(([^)\n]+)\)')
@@ -105,7 +106,11 @@ for path, file in PATHS.items():
     if file.suffix == '.md':
         raw = file.read_text(encoding='utf-8-sig')
         headings = scan_headings(raw)
-        title = headings[0]['title'] if headings else file.stem
+        multiple_titles = sum(h['level'] == 1 for h in headings) > 1
+        title = file.stem if multiple_titles else headings[0]['title'] if headings else file.stem
+        if multiple_titles:
+            for heading in headings:
+                heading['level'] = min(6, heading['level'] + 1)
         title = re.sub(r'^九州志\s*', '', title) or title
         sections = []
         lines = raw.splitlines()
@@ -128,6 +133,13 @@ for path, file in PATHS.items():
             item['dataUrl'] = f'data:{mimetypes.guess_type(file.name)[0]};base64,' + base64.b64encode(file.read_bytes()).decode('ascii')
         elif fmt == 'txt':
             item['raw'] = file.read_text(encoding='utf-8-sig')
+            item['excerpt'] = '原始对话全文；区分 User 输入、Agent 建议及其后续修订。'
+            lines = item['raw'].splitlines()
+            starts = [i for i, line in enumerate(lines) if re.match(r'^(User|Agent)[：:]', line)]
+            for n, start in enumerate(starts):
+                end = starts[n+1] if n+1 < len(starts) else len(lines)
+                who = lines[start].split('：', 1)[0]
+                item['sections'].append({'id': f'line-{start+1}', 'title': f'{who} 发言 · 第{start+1}行', 'level': 2, 'line': start+1, 'text': '\n'.join(lines[start:end])})
         DOCUMENTS[path] = item
 
 
@@ -253,7 +265,7 @@ def render(raw: str, path: str, headings: list[dict] | None = None) -> str:
         heading = re.match(r'^(#{1,6})\s+(.+)$', line)
         if heading:
             meta = heads.get(i + 1)
-            level = min(6, len(heading.group(1)))
+            level = meta['level'] if meta else min(6, len(heading.group(1)))
             slug = meta['id'] if meta else re.sub(r'\s+', '-', plain(heading.group(2)))
             ident = f'id="{html.escape(slug)}"' if not (meta and meta['explicit']) else ''
             if level != 1:
@@ -385,7 +397,7 @@ if not impacts: ERRORS.append('未能读取修改影响路线')
 
 DATA = {'builtAt': datetime.now().astimezone().isoformat(timespec='seconds'), 'groups': GROUPS, 'documents': list(DOCUMENTS.values()),
         'links': LINKS, 'impacts': impacts, 'decisions': decisions, 'tasks': tasks, 'decisionPath': DECISION_PATH, 'governancePath': GOV_PATH,
-        'ownership': ownership, 'version': 'v0.5', 'warnings': []}
+        'ownership': ownership, 'version': re.search(r'v\d+\.\d+', DOCUMENTS['README.md']['raw']).group(), 'warnings': []}
 
 if ERRORS:
     print('发现需要处理的来源问题，未覆盖现有 HTML：')
@@ -404,5 +416,5 @@ temp.write_text(result, encoding='utf-8')
 temp.replace(OUTPUT)
 print(f'已生成：{OUTPUT.name}')
 print(f'文档 {sum(d["format"] == "md" for d in DOCUMENTS.values())} 份，附件 {sum(d["format"] != "md" for d in DOCUMENTS.values())} 份。')
-print(f'正文引用 {len(LINKS)} 处，修改影响 {len(impacts)} 条，待决 {len(decisions)} 项，任务 {len(tasks)} 项。')
+print(f'正文引用 {len(LINKS)} 处，修改影响 {len(impacts)} 条，决策 {len(decisions)} 项，任务 {len(tasks)} 项。')
 print('本地链接与章节定位检查通过。正文和关系均来自项目源文件。')

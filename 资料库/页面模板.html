@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="九州志本地共创资料库。离线阅读、全文索引、来源引用、修改影响与待决事项追踪。">
+  <meta name="description" content="九州志本地共创资料库。离线阅读、全文索引、来源引用、修改影响与决策记录追踪。">
   <title>九州志 · 本地资料库</title>
   <style>/*__STYLE__*/</style>
 </head>
@@ -34,11 +34,11 @@
   </div>
   <dialog id="search-dialog" class="search-dialog" aria-label="全文搜索">
     <form method="dialog" class="search-top"><span class="search-icon"></span><input id="search-input" autocomplete="off" placeholder="搜索名称、正文、规则或 D 编号…" aria-label="搜索关键词"><button value="close" class="key-button" aria-label="关闭搜索">Esc</button></form>
-    <div class="search-options"><span id="search-summary">输入关键词，搜索所有现行资料</span><label><input id="search-archive" type="checkbox"> 包含归档</label></div>
+    <div class="search-options"><span id="search-summary">默认只搜索现行内容</span><label><input id="search-source" type="checkbox"> 包含来源</label><label><input id="search-archive" type="checkbox"> 包含归档</label></div>
     <div id="search-results" class="search-results" role="list"></div>
     <div class="search-bottom"><span>名称、章节与正文同时检索</span><span><kbd>↑</kbd><kbd>↓</kbd> 选择 <kbd>Enter</kbd> 阅读</span></div>
   </dialog>
-  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title"><button class="dialog-close icon-button" data-action="close-help" aria-label="关闭说明">×</button><div class="eyebrow">案头使用指南</div><h2 id="help-title">阅读有径，修改有据。</h2><div class="help-step"><b>01</b><div><h3>直接打开，离线查阅</h3><p>本页面已收录项目正文与两张原图。搜索、目录、图谱和待决追踪都可在本地使用，归档附件可从原文件打开。</p></div></div><div class="help-step"><b>02</b><div><h3>改源文档，再更新资料库</h3><p>Markdown 文件仍是唯一正文。修改或新增资料后，双击项目根目录的<strong>“更新资料库.cmd”</strong>，完成后刷新本页面。打开 HTML 本身不会自动扫描磁盘变化。</p></div></div><div class="help-step"><b>03</b><div><h3>分清引用与修改影响</h3><p>正文引用展示页面如何相互引用；修改影响来自协作文档中的检查路线。图谱中的连线用于追踪文档关系，不代表所有对象互为创世前提。</p></div></div><div class="help-step"><b>04</b><div><h3>收藏与最近阅读</h3><p>收藏和阅读记录仅保存在当前浏览器。本资料库不修改原文或待决状态；需要确认设定时，请在对应主文档和决策记录中维护。</p></div></div><div class="help-note" id="help-build"></div></dialog>
+  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title"><button class="dialog-close icon-button" data-action="close-help" aria-label="关闭说明">×</button><div class="eyebrow">案头使用指南</div><h2 id="help-title">阅读有径，修改有据。</h2><div class="help-step"><b>01</b><div><h3>直接打开，离线查阅</h3><p>本页面已收录项目正文与两张原图。搜索、目录、图谱和决策追踪都可在本地使用，归档附件可从原文件打开。</p></div></div><div class="help-step"><b>02</b><div><h3>改源文档，再更新资料库</h3><p>Markdown 文件仍是唯一正文。修改或新增资料后，双击项目根目录的<strong>“更新资料库.cmd”</strong>，完成后刷新本页面。打开 HTML 本身不会自动扫描磁盘变化。</p></div></div><div class="help-step"><b>03</b><div><h3>分清引用与修改影响</h3><p>正文引用展示页面如何相互引用；修改影响来自协作文档中的检查路线。图谱中的连线用于追踪文档关系，不代表所有对象互为创世前提。</p></div></div><div class="help-step"><b>04</b><div><h3>收藏与最近阅读</h3><p>收藏和阅读记录仅保存在当前浏览器。本资料库不修改原文或待决状态；需要确认设定时，请在对应主文档和决策记录中维护。</p></div></div><div class="help-note" id="help-build"></div></dialog>
   <dialog id="image-dialog" class="image-dialog" aria-labelledby="image-title"><header><span id="image-title">原图</span><div><button data-action="image-minus" aria-label="缩小图片">−</button><button data-action="image-fit">适应窗口</button><button data-action="image-plus" aria-label="放大图片">＋</button><button data-action="close-image" aria-label="关闭图片">×</button></div></header><div id="image-zoom-stage" class="image-zoom-stage"><img id="zoom-image" alt=""></div></dialog>
   <div id="toast" role="status" aria-live="polite" hidden></div>
   <noscript><div class="noscript">请启用浏览器的 JavaScript 以使用本地资料库，或直接打开项目中的 README.md 阅读索引。</div></noscript>
